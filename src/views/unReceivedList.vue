@@ -83,6 +83,8 @@
 </style>
 <script>
 import Nav from "../components/navigator"
+import url from "../modules//baseURL"
+
 export default {
     data(){
         return {
@@ -96,7 +98,7 @@ export default {
     methods:{
         receive($event){
             this.orderId = $event.currentTarget.getAttribute("orderId");
-            this.$http.get("/api/order/receive",{
+            this.$http.get(url.baseURL+"/order/receive",{
                 params:{
                     orderId:this.orderId
                 }
@@ -104,12 +106,16 @@ export default {
                 this.unReceive = res.data.data;
                 if(res.status == 200){
                     alert("接单成功");
+                    //1s后刷新页面
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000); 
                 }
             })
         }
     },
     created(){
-        this.$http.get("/api/order/list",{
+        this.$http.get(url.baseURL+"/order/list",{
             params:{
                 state:"unreceived",
                 startPage:0,

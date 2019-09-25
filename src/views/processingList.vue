@@ -19,6 +19,7 @@
                     :id="index"
                     :identity="item.order.identity"
                     :claimType="item.order.claimType"
+                    :orderId="item.order.id"
                 >订单详情</button>
             </li>
         </ul>
@@ -52,6 +53,8 @@
 </style>
 <script>
 import Nav from "../components/navigator"
+import url from "../modules/baseURL"
+
 export default {
     data(){
         return {
@@ -67,6 +70,7 @@ export default {
         toggle($event){
             var identity = $event.currentTarget.getAttribute("identity");
             var claimType = $event.currentTarget.getAttribute("claimType");
+            var orderId = $event.currentTarget.getAttribute("orderId");
             var path =  $event.currentTarget.getAttribute("id");
             
             this.$router.push({
@@ -74,7 +78,8 @@ export default {
                 query:{
                     id:path,
                     identity:identity,
-                    claimType:claimType
+                    claimType:claimType,
+                    orderId:orderId
                 }
             });
         }
@@ -88,7 +93,7 @@ export default {
         document.getElementById("processingList").setAttribute("class","active");
     },
     created(){
-        this.$http.get("/api/order/list",{
+        this.$http.get(url.baseURL+"/order/list",{
             params:{
                 state:"processing",
                 startPage:0,

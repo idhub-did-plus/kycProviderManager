@@ -4,116 +4,60 @@
             <div id="top"></div>
             <div id="bottom">
                 <div id="msg">
-                    <span>{{identity}}</span>
-                    <br>
+                    <div id="username">
+                        {{msg.archive.identityInfo.name.firstName}}
+                        {{msg.archive.identityInfo.name.middleName}}
+                        {{msg.archive.identityInfo.name.lastName}}
+                    </div>
                     <span>{{claimType}}</span>
-                </div>
-                <div class="msg">
-                    <button type="button" class="btn btn-primary">调用kyc</button>
-                    <button type="button" class="btn btn-primary">获取kyc状态</button>
-                    <button type="button" class="btn btn-primary">颁发证书</button>
-                    <button type="button" class="btn btn-primary">拒绝颁发证书</button>
+                    <br>
+                    <span>{{identity}}</span>
                 </div>
             </div>
             <div id="img"><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3987282417,3624059467&fm=26&gp=0.jpg" alt=""></div>
         </div>
         <div id="textInfo" class="info">
             <ul>
-                <li><span>国家</span>Dapibus ac facilisis in</li>
-                <li><span>司法区</span>Dapibus ac facilisis in</li>
-                <li><span>生日</span>Morbi leo risus</li>
-                <li><span>生日</span>Porta ac consectetur ac</li>
-                <li><span>生日</span>Vestibulum at eros</li>
-                <li><span>生日</span>Cras justo odio</li>
-                <li><span>生日</span>Dapibus ac facilisis in</li>
-                <li><span>生日</span>Morbi leo risus</li>
-                <li><span>生日</span>Porta ac consectetur ac</li>
-                <li><span>生日</span>Vestibulum at eros</li>
-                <li><span>生日</span>Vestibulum at eros</li>
+                <li style="margin-top:20px;"><span>birthday</span>{{msg.archive.identityInfo.birthday}}</li>
+                <li><span>country</span>{{msg.archive.identityInfo.country}}</li>
+                <li><span>residenceCountry</span>{{msg.archive.identityInfo.residenceCountry}}</li>
+                <li><span>idcardNumber</span>{{msg.archive.identityInfo.idcardNumber}}</li>
+                <li><span>passportNumber</span>{{msg.archive.identityInfo.passportNumber}}</li>
+                <li><span>phoneNumber</span>{{msg.archive.identityInfo.phoneNumber}}</li>
+                <li><span>gender</span>{{msg.archive.identityInfo.gender}}</li>
+                <li><span>email</span>{{msg.archive.basicInfo.email}}</li>
+                <li><span>taxId</span>{{msg.archive.basicInfo.taxId}}</li>
+                <li><span>ssn</span>{{msg.archive.basicInfo.ssn}}</li>
+                <li>
+                    <span>address</span>
+                    <p v-for="(i,index) in msg.archive.identityInfo.address.addressSequence" :key="index">
+                        <span class="address">{{i.name}}:</span>{{i.value}}
+                    </p>
+                    <p><span class="address">postalCode:</span>{{msg.archive.identityInfo.address.postalCode}}</p>
+                </li>
+                <li><span>financialProfile</span>
+                    <p><span class="address">buyerType:</span>{{msg.archive.financialProfile.buyerType}}</p>
+                    <p><span class="address">investorType:</span>{{msg.archive.financialProfile.investorType}}</p>
+                </li>
             </ul>
         </div>
         <div id="fileInfo" class="info">
             <ul ref="ul1">
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>评估机构的评估文件</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
-                    </div>
-                </li>
-                <li>
-                    <div @click="showDetial">
-                        <p></p>
-                        <span>身份证件正面照片</span>
+                <li v-for="(item,index) in msg.materials" :key="index">
+                    <div>
+                        <p><img src="../assets/file.jpg" alt=""></p>
+                        <span>{{item.type}}</span>
                     </div>
                 </li>
             </ul>
-            <div id="show" ref="show">
-                <button type="button" class="btn btn-default" ref="back">返回信息列表</button>
-                <div>证件内容</div>
-            </div>
         </div>
         <div id="kyc" class="info">
             <ul>
                 <h3>kyc调用记录</h3>
-                <li>
-                    <p><span>请求：</span></p>
-                    <p><span>返回值：</span></p>
-                </li>
-                <li>
-                    <p><span>请求：</span></p>
-                    <p><span>返回值：</span></p>
-                </li>
-                <li>
-                    <p><span>请求：</span></p>
-                    <p><span>返回值：</span></p>
+                <li v-for="(item,index) in kycHistory" :key="index">
+                    {{item}}
+                    <!-- <p><span>请求：</span></p>
+                    <p><span>返回值：</span></p> -->
                 </li>
             </ul>
         </div>
@@ -124,10 +68,11 @@
         float: left;
         #box{
             width:800px;
-            height:300px;
+            height:280px;
             background:	#fff;
             box-shadow: 2px 3px 4px #ccc;
             position:relative;
+            padding-bottom: 20px;
             #top{
                 width:800px;
                 height:130px;
@@ -151,23 +96,20 @@
             #bottom{
                 color:#000;
                 #msg{
-                    margin-top: 30px;
+                    margin-top: 10px;
                     margin-left: 170px;
-                    font-size: 20px;
-                    span:nth-child(1){
+                    font-size: 16px;
+                    div:nth-child(1){
+                        margin-top: 25px;
+                        margin-left: 10px;
                         font-weight: 700;
+                        margin-bottom: 10px;
                     }
                     span:nth-child(2){
-                        margin-left: 50px;
+                        margin-left: 10px;
                     }
-                }
-                .msg{
-                    margin-top: 30px;
-                    margin-left: 80px;
-                    button{
-                        margin-left: 20px;
-                        padding-left: 20px;
-                        padding-right: 20px;
+                    span:nth-child(4){
+                        margin-left: 10px;
                     }
                 }
             }
@@ -186,16 +128,27 @@
                     padding:6px;
                     color:#000;
                     span{
-                        padding-left:40px;
-                        padding-right:90px;
+                        padding-left:20px;
                         font-weight: 600;
+                        display:inline-block;
+                        width:220px;
+                    }
+                    .address{
+                        font-weight: 500;
+                        padding-left: 0;
+                        width: 110px;
+                    }
+                    p{
+                        padding:6px;
+                        padding-left: 220px;
                     }
                 }
             }
         }
         #fileInfo{
-            height:500px;
             padding:30px 40px;
+            margin-bottom: 50px;
+            overflow: hidden;
             ul{
                 width:100%;
                 height:100%;
@@ -203,29 +156,26 @@
                     float:left;
                     margin-top: 35px;
                     margin-left: 30px;
-                    width:135px;
+                    width:150px;
                     overflow: hidden;
                     box-shadow: 1px 1px 1px #ccc;
                     text-align: center;
                     p{
                         display:inline-block;
                         width:70px;
-                        height:70px;
-                        background: url("../assets/file.jpg") no-repeat;
-                        background-size: 100%;
+                        img{
+                            margin-top: 30px;
+                            width:100%;
+                            height:100%;
+                        }
                     }
                     span{
-                        display:inline-block;
+                        margin-top: 10px;
+                        margin-bottom: 20px;
+                        display:block;
                         font-size: 12px;
-                        font-weight: 600;
                         color:#000;
                     }
-                }
-            }
-            #show{
-                display: none;
-                div{
-                    margin-top: 20px;
                 }
             }
         }
@@ -251,16 +201,14 @@
 </style>
 <script>
 export default {
-    props:["identity","claimType","msg"],
-    methods:{
-        showDetial(){
-            this.$refs.ul1.style.display = "none";
-            this.$refs.show.style.display = "block";
-            this.$refs.back.onclick = ()=>{
-                this.$refs.ul1.style.display = "block";
-                this.$refs.show.style.display = "none";
-            }
+    data(){
+        return {
+            kycHistory:[]
         }
+    },
+    props:["identity","claimType","msg"],
+    mounted(){
+        console.log(this.kycHistory);
     }
 }
 </script>

@@ -3,11 +3,10 @@
         <div id="claimBox">
             <div id="header"></div>
             <div id="content">
-                <button type="button" class="btn btn-primary">IDHub VIP</button>
-                <button type="button" class="btn btn-primary">IDHub SVIP</button>
-                <button type="button" class="btn btn-primary">SEC Accredited Investor</button>
-                <button type="button" class="btn btn-primary">SEC Accredited Purchaser</button>
-                <button type="button" class="btn btn-primary">ST Compliant Investor</button>
+                <button @click="kyc" type="button" class="btn btn-primary">获取kyc状态</button>
+                <button @click="kycState" type="button" class="btn btn-primary">kyc调用记录</button>
+                <button @click="agree" type="button" class="btn btn-primary">颁发证书</button>
+                <button @click="refuse" type="button" class="btn btn-primary">拒绝颁发证书</button>
             </div>
         </div>
     </div>
@@ -15,9 +14,11 @@
 <style lang="scss">
     .right{
         margin-top: 40px;
+        position:fixed;
+        top:70px;
         #claimBox{
             width:300px;
-            height:400px;
+            height:350px;
             background:#fff;
             margin-left: 890px;
             box-shadow: 2px 3px 4px #ccc;
@@ -29,10 +30,10 @@
             }
             #content{
                 width:300px;
-                height:350px;
+                height:300px;
                 background: #fff;
                 text-align: center;
-                padding:50px 20px 15px 20px;
+                padding:30px 20px 15px 20px;
                 border:1px solid #ccc;
                 button{
                     display:inline-block;
@@ -47,7 +48,65 @@
     }
 </style>
 <script>
-export default {
+import url from "../modules/baseURL"
 
+export default {
+    data(){
+        return {
+            kycHistory:[]
+        }
+    },
+    props:["orderId"],
+    methods:{
+        kyc(){
+            //状态接口idm evalute
+            this.$http.get(url.baseURL+"/idm/evaluate",{
+                params:{
+                    orderId:this.orderId
+                }
+            }).then(res=>{
+                if(res.data.success = true){
+                   alert(res.data.data);
+                }else{
+                    alert("正在审核中...");
+                }
+            })
+        },
+        kycState(){
+            //调用记录接口 order interactions
+            this.$http.get(url.baseURL+"/order/interactions",{
+                params:{
+                    orderId:this.orderId
+                }
+            }).then(res=>{
+                if(res.data.success = true){
+                   this.kycHistory = res.data.data;
+                   this.$parent.$refs.brother.kycHistory = this.kycHistory; 
+                }
+            })
+        },
+        agree(){
+            this.$http.get(url.baseURL+"/order/issue_claim",{
+                params:{
+                    orderId:this.orderId
+                }
+            }).then(res=>{
+                if(res.data.success = true){
+                    alert("颁发成功")
+                }
+            })
+        },
+        refuse(){
+            this.$http.get(url.baseURL+"/order/refuse_claim",{
+                params:{
+                    orderId:this.orderId
+                }
+            }).then(res=>{
+                if(res.data.success = true){
+                    alert("已拒绝颁发")
+                }
+            })
+        }
+    }
 }
 </script>

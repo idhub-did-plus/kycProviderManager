@@ -1,6 +1,6 @@
 module.exports = {
     // 基本路径
-    publicPath: '/management/',
+    publicPath: '/',
     // 输出文件目录
     outputDir: 'dist',
     // eslint-loader 是否在保存的时候检查
@@ -32,15 +32,15 @@ module.exports = {
         port: 8080,
         https: false,
         hotOnly: false,
-        proxy: { // 设置代理
-            "/api":{
-                target:"http://10.16.58.38:8081",
-                changeOrigin:true,
-                pathRewrite:{
-                    "^/api":""
-                }
-            }
-        },
+        // proxy: { // 设置代理
+        //     "/api":{
+        //         target:"http://10.16.58.38:8081",
+        //         changeOrigin:true,
+        //         pathRewrite:{
+        //             "^/api":""
+        //         }
+        //     }
+        // },
         before: app => { }
     },
     // 第三方插件配置
