@@ -9,6 +9,8 @@
                 <button @click="refuse" type="button" class="btn btn-primary">拒绝颁发证书</button>
             </div>
         </div>
+        <popup :state="state" id="son"></popup>
+        <kycHistory :kycHistory="kycHistory" id="history"></kycHistory>
     </div>
 </template>
 <style lang="scss">
@@ -49,39 +51,51 @@
 </style>
 <script>
 import url from "../modules/baseURL"
+import popup from "../components/popUp"
+import kycHistory from "../components/kycHistory"
 
 export default {
+    components:{
+        popup,
+        kycHistory
+    },
     data(){
         return {
-            kycHistory:[]
+            kycHistory:[],
+            state:""
         }
     },
     props:["orderId"],
     methods:{
         kyc(){
-            //状态接口idm evalute
+            //kyc状态接口idm evalute
             this.$http.get(url.baseURL+"/idm/evaluate",{
                 params:{
                     orderId:this.orderId
                 }
             }).then(res=>{
-                if(res.data.success = true){
-                   alert(res.data.data);
-                }else{
-                    alert("正在审核中...");
+                if(res.data.success == true && res.data.data == null){
+                   alert("正在审核中...");
+                }
+                if(res.data.success == true && res.data.data != null){
+                    this.state = res.data.data;
+                    //加一个弹窗展示
+                    document.getElementById("son").style.display = "block";
                 }
             })
         },
         kycState(){
-            //调用记录接口 order interactions
+            //kyc调用记录接口 order interactions
             this.$http.get(url.baseURL+"/order/interactions",{
                 params:{
                     orderId:this.orderId
                 }
             }).then(res=>{
-                if(res.data.success = true){
+                if(res.data.success == true){
                    this.kycHistory = res.data.data;
-                   this.$parent.$refs.brother.kycHistory = this.kycHistory; 
+                   document.getElementById("history").style.display = "block";
+                }else{
+                    console.log("记录调用失败");
                 }
             })
         },
@@ -91,19 +105,24 @@ export default {
                     orderId:this.orderId
                 }
             }).then(res=>{
-                if(res.data.success = true){
+                if(res.data.success == true){
                     alert("颁发成功")
+                }else{
+                    alert("颁发失败")
                 }
             })
         },
         refuse(){
+            console.log(this.orderId);
             this.$http.get(url.baseURL+"/order/refuse_claim",{
                 params:{
                     orderId:this.orderId
                 }
             }).then(res=>{
-                if(res.data.success = true){
+                if(res.data.success == true){
                     alert("已拒绝颁发")
+                }else{
+                    alert("拒绝颁发失败")
                 }
             })
         }

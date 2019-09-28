@@ -5,9 +5,9 @@
             <div id="bottom">
                 <div id="msg">
                     <div id="username">
-                        {{msg.archive.identityInfo.name.firstName}}
-                        {{msg.archive.identityInfo.name.middleName}}
-                        {{msg.archive.identityInfo.name.lastName}}
+                        {{processingMsg.archive.identityInfo.name.firstName}}
+                        {{processingMsg.archive.identityInfo.name.middleName}}
+                        {{processingMsg.archive.identityInfo.name.lastName}}
                     </div>
                     <span>{{claimType}}</span>
                     <br>
@@ -18,52 +18,43 @@
         </div>
         <div id="textInfo" class="info">
             <ul>
-                <li style="margin-top:20px;"><span>birthday</span>{{msg.archive.identityInfo.birthday}}</li>
-                <li><span>country</span>{{msg.archive.identityInfo.country}}</li>
-                <li><span>residenceCountry</span>{{msg.archive.identityInfo.residenceCountry}}</li>
-                <li><span>idcardNumber</span>{{msg.archive.identityInfo.idcardNumber}}</li>
-                <li><span>passportNumber</span>{{msg.archive.identityInfo.passportNumber}}</li>
-                <li><span>phoneNumber</span>{{msg.archive.identityInfo.phoneNumber}}</li>
-                <li><span>gender</span>{{msg.archive.identityInfo.gender}}</li>
-                <li><span>email</span>{{msg.archive.basicInfo.email}}</li>
-                <li><span>taxId</span>{{msg.archive.basicInfo.taxId}}</li>
-                <li><span>ssn</span>{{msg.archive.basicInfo.ssn}}</li>
+                <li style="margin-top:20px;"><span>birthday</span>{{processingMsg.archive.identityInfo.birthday}}</li>
+                <li><span>country</span>{{processingMsg.archive.identityInfo.country}}</li>
+                <li><span>residenceCountry</span>{{processingMsg.archive.identityInfo.residenceCountry}}</li>
+                <li><span>idcardNumber</span>{{processingMsg.archive.identityInfo.idcardNumber}}</li>
+                <li><span>passportNumber</span>{{processingMsg.archive.identityInfo.passportNumber}}</li>
+                <li><span>phoneNumber</span>{{processingMsg.archive.identityInfo.phoneNumber}}</li>
+                <li><span>gender</span>{{processingMsg.archive.identityInfo.gender}}</li>
+                <li><span>email</span>{{processingMsg.archive.basicInfo.email}}</li>
+                <li><span>taxId</span>{{processingMsg.archive.basicInfo.taxId}}</li>
+                <li><span>ssn</span>{{processingMsg.archive.basicInfo.ssn}}</li>
                 <li>
                     <span>address</span>
-                    <p v-for="(i,index) in msg.archive.identityInfo.address.addressSequence" :key="index">
+                    <p v-for="(i,index) in processingMsg.archive.identityInfo.address.addressSequence" :key="index">
                         <span class="address">{{i.name}}:</span>{{i.value}}
                     </p>
-                    <p><span class="address">postalCode:</span>{{msg.archive.identityInfo.address.postalCode}}</p>
+                    <p><span class="address">postalCode:</span>{{processingMsg.archive.identityInfo.address.postalCode}}</p>
                 </li>
                 <li><span>financialProfile</span>
-                    <p><span class="address">buyerType:</span>{{msg.archive.financialProfile.buyerType}}</p>
-                    <p><span class="address">investorType:</span>{{msg.archive.financialProfile.investorType}}</p>
+                    <p><span class="address">buyerType:</span>{{financialProfile.archive.financialProfile.buyerType}}</p>
+                    <p><span class="address">investorType:</span>{{financialProfile.archive.financialProfile.investorType}}</p>
                 </li>
             </ul>
         </div>
         <div id="fileInfo" class="info">
             <ul ref="ul1">
-                <li v-for="(item,index) in msg.materials" :key="index">
+                <li v-for="(item,index) in processingMsg.materials" :key="index" @click="showFile(index)">
                     <div>
-                        <p><img src="../assets/file.jpg" alt=""></p>
+                        <p><img src="../assets/page.png" alt=""></p>
                         <span>{{item.type}}</span>
                     </div>
                 </li>
             </ul>
         </div>
-        <div id="kyc" class="info">
-            <ul>
-                <h3>kyc调用记录</h3>
-                <li v-for="(item,index) in kycHistory" :key="index">
-                    {{item}}
-                    <!-- <p><span>请求：</span></p>
-                    <p><span>返回值：</span></p> -->
-                </li>
-            </ul>
-        </div>
+        <file id="file" :message="processingMsg" :userID="identity" :item="fileIndex"></file>
     </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
     .top{
         float: left;
         #box{
@@ -152,11 +143,14 @@
             ul{
                 width:100%;
                 height:100%;
+                position: relative;
+                z-index:10;
                 li{
                     float:left;
                     margin-top: 35px;
                     margin-left: 30px;
                     width:150px;
+                    height:170px;
                     overflow: hidden;
                     box-shadow: 1px 1px 1px #ccc;
                     text-align: center;
@@ -175,40 +169,46 @@
                         display:block;
                         font-size: 12px;
                         color:#000;
+                        cursor: pointer;
                     }
-                }
-            }
-        }
-        #kyc{
-            margin-bottom: 50px;
-            li{
-                padding:10px;
-                margin-top: 10px;
-                border:1px solid #ccc;
-                p{
-                    padding:8px;
-                    span{
-                        padding:10px;
-                        color:#000;
-                    }
-                }
-                p:nth-child(2){
-                    margin-top: 5px;
                 }
             }
         }
     }
 </style>
 <script>
+import file from "../components/file"
+
 export default {
     data(){
         return {
-            kycHistory:[]
+            buyerType:"",
+            investorType:"",
+            fileIndex:0,
+            financialProfile:""
         }
     },
-    props:["identity","claimType","msg"],
-    mounted(){
-        console.log(this.kycHistory);
+    components:{
+        file
+    },
+    props:["identity","claimType","processingMsg"],
+    methods:{
+        showFile(index){
+            this.fileIndex = index;
+            console.log(document.getElementById("file").getAttribute("item"));
+            document.getElementById("file").style.display = "block";
+        }
+    },
+    watch:{
+        processingMsg(newVal){
+            this.financialProfile = newVal;
+            if(!this.financialProfile.archive.financialProfile.buyerType){
+                this.financialProfile.archive.financialProfile.buyerType = null;
+            }
+            if(!this.financialProfile.archive.financialProfile.investorType){
+                this.financialProfile.archive.financialProfile.investorType = null;
+            }
+        }
     }
 }
 </script>

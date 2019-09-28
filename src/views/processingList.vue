@@ -3,8 +3,8 @@
         <Nav></Nav>
         <nav aria-label="...">
             <ul class="pager">
-                <li><a href="#">前一页</a></li>
-                <li><a href="#">下一页</a></li>
+                <li id="prev"><a @click="prev">前一页</a></li>
+                <li id="next"><a @click="next">下一页</a></li>
             </ul>
         </nav>
         <ul class="list-group">
@@ -23,7 +23,7 @@
                 >订单详情</button>
             </li>
         </ul>
-        <div id="page">第<span>1</span>/<span>3</span>页</div>
+        <div id="page">第<span>{{nowPage}}</span>/<span>{{Math.ceil(this.totle/pageSize)?Math.ceil(this.totle/pageSize):1}}</span>页</div>
     </div>
 </template>
 <style lang="scss">
@@ -60,19 +60,38 @@ export default {
         return {
             processing:"",
             identity:"",
-            claimType:""
+            claimType:"",
+            totle:0,
+            pageSize:6,
+            nowPage:1,
+            maxPage:1
         }
     },
     components:{
         Nav
     },
     methods:{
+        prev(){
+            if(this.nowPage > 1){
+                this.nowPage = this.nowPage-1
+            }else{
+                this.nowPage = 1;
+                document.getElementById("prev").setAttribute("class","disabled");
+            }
+        },
+        next(){
+            if(this.nowPage < this.maxPage){
+                this.nowPage = this.nowPage+1
+            }else{
+                this.nowPage = this.maxPage;
+                document.getElementById("next").setAttribute("class","disabled");
+            }
+        },
         toggle($event){
             var identity = $event.currentTarget.getAttribute("identity");
             var claimType = $event.currentTarget.getAttribute("claimType");
             var orderId = $event.currentTarget.getAttribute("orderId");
             var path =  $event.currentTarget.getAttribute("id");
-            
             this.$router.push({
                 path:"processingDetail/"+path,
                 query:{
@@ -88,20 +107,59 @@ export default {
         //切换导航条活跃样式
         var arr = document.getElementsByClassName("nav")[0].children;
         for(var i=0;i<arr.length;i++){
-                arr[i].setAttribute("class","")
-            }
+            arr[i].setAttribute("class","")
+        }
         document.getElementById("processingList").setAttribute("class","active");
     },
     created(){
+        //实现分页 获取processing状态下的订单总数
+        this.$http.get(url.baseURL+"/order/size",{
+            params:{
+                state:"processing"
+            }
+        }).then(res=>{
+            if(res.data.success == true){
+                this.totle = res.data.data;
+                this.maxPage = Math.ceil(this.totle/this.pageSize)?Math.ceil(this.totle/this.pageSize):1;
+            }else{
+                console.log("/order/size请求失败");
+            }
+            
+        })
+        //请求第一页的列表信息
         this.$http.get(url.baseURL+"/order/list",{
             params:{
                 state:"processing",
-                startPage:0,
-                pageSize:6
+                startPage:this.nowPage-1,
+                pageSize:this.pageSize
             }
         }).then(res=>{
-            this.processing = res.data.data;
+            if(res.data.success == true){
+                this.processing = res.data.data;
+            }
+            if(res.data.success == false){
+                alert("获取订单列表失败");
+            }
         })
+    },
+    watch:{
+        nowPage:function(){
+            //请求列表信息
+            this.$http.get(url.baseURL+"/order/list",{
+                params:{
+                    state:"processing",
+                    startPage:this.nowPage-1,
+                    pageSize:this.pageSize
+                }
+            }).then(res=>{
+                if(res.data.success == true){
+                    this.processing = res.data.data;
+                }
+                if(res.data.success == false){
+                    alert("获取订单列表失败");
+                }
+            })
+        }
     }
 }
 </script>

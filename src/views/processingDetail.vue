@@ -3,7 +3,7 @@
         <div class="page-header">
             <h1>详细信息</h1>
         </div>
-        <Left :id="id" :identity="identity" :claimType="claimType" :msg="msg" ref="brother"></Left>
+        <Left :id="id" :identity="identity" :claimType="claimType" :processingMsg="msg" ref="brother"></Left>
         <Right :orderId="orderId"></Right>
     </div>
 </template>
@@ -33,14 +33,16 @@ export default {
         this.identity = this.$route.query.identity;
         this.claimType = this.$route.query.claimType;
         this.orderId = this.$route.query.orderId;
-        
+        //请求用户信息
         this.$http.get(url.baseURL+"/order/identity_archive",{
             params:{
                 identity:this.identity
             }
         }).then(res=>{
-            if(res.data.success = true){
+            if(res.data.success == true){
                 this.msg = res.data.data.data;
+            }else{
+                alert("请求用户信息失败");
             }
         })
     }
