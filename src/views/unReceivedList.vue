@@ -1,12 +1,6 @@
 <template>
     <div class="list">
         <Nav></Nav>
-        <nav aria-label="...">
-            <ul class="pager">
-                <li id="prev"><a @click="prev">前一页</a></li>
-                <li id="next"><a @click="next">下一页</a></li>
-            </ul>
-        </nav>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -29,6 +23,12 @@
                 </tr>
             </tbody>
         </table>
+        <nav aria-label="...">
+            <ul class="pager">
+                <li id="prev"><a @click="prev">前一页</a></li>
+                <li id="next"><a @click="next">下一页</a></li>
+            </ul>
+        </nav>
         <div id="page">第<span>{{nowPage}}</span>/<span>{{Math.ceil(this.totle/pageSize)?Math.ceil(this.totle/pageSize):1}}</span>页</div>
     </div>
 </template>
@@ -36,6 +36,9 @@
     .list{
         nav{
             margin-top: 100px;
+        }
+        .table{
+            margin-top: 60px;
         }
         .list-group-item{
             position: relative;
