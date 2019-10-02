@@ -113,7 +113,6 @@ export default {
             })
         },
         refuse(){
-            console.log(this.orderId);
             this.$http.get(url.baseURL+"/order/refuse_claim",{
                 params:{
                     orderId:this.orderId

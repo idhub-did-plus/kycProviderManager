@@ -36,8 +36,8 @@
                     <p><span class="address">postalCode:</span>{{processingMsg.archive.identityInfo.address.postalCode}}</p>
                 </li>
                 <li><span>financialProfile</span>
-                    <p><span class="address">buyerType:</span>{{financialProfile.archive.financialProfile.buyerType}}</p>
-                    <p><span class="address">investorType:</span>{{financialProfile.archive.financialProfile.investorType}}</p>
+                    <p><span class="address">buyerType:</span>{{buyerType}}</p>
+                    <p><span class="address">investorType:</span>{{investorType}}</p>
                 </li>
             </ul>
         </div>
@@ -185,7 +185,9 @@ export default {
             buyerType:"",
             investorType:"",
             fileIndex:0,
-            financialProfile:""
+            financialProfile:"",
+            buyerType:"",
+            investorType:""
         }
     },
     components:{
@@ -195,18 +197,18 @@ export default {
     methods:{
         showFile(index){
             this.fileIndex = index;
-            console.log(document.getElementById("file").getAttribute("item"));
             document.getElementById("file").style.display = "block";
         }
     },
     watch:{
         processingMsg(newVal){
             this.financialProfile = newVal;
-            if(!this.financialProfile.archive.financialProfile.buyerType){
-                this.financialProfile.archive.financialProfile.buyerType = null;
-            }
-            if(!this.financialProfile.archive.financialProfile.investorType){
-                this.financialProfile.archive.financialProfile.investorType = null;
+            if(this.financialProfile.archive.financialProfile == null){
+                this.buyerType = null;
+                this.investorType = null;
+            }else{
+                this.buyerType = this.financialProfile.archive.financialProfile.buyerType;
+                this.investorType = this.financialProfile.archive.financialProfile.investorType;
             }
         }
     }

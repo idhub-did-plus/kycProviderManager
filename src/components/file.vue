@@ -7,7 +7,7 @@
             <div class="panel-body">
                 <div class="content">
                     <ul>
-                        <li><span>文件ID:</span><span>{{message.materials[item].id}}</span></li>
+                        <li><span>文件ID:</span><p>{{message.materials[item].id}}</p></li>
                         <li><span>用户ID:</span><span>{{userID}}</span></li>
                         <li><span>资料类型：</span><span>{{message.materials[item].type}}</span></li>
                         <li><span>文件名称：</span><span>{{message.materials[item].name}}</span></li>
@@ -47,6 +47,13 @@
                     li{
                         padding:4px;
                         margin-top: 5px;
+                        span{
+                            padding:8px;
+                        }
+                    }
+                    p{
+                        padding:8px;
+                        word-break:break-all;
                     }
                 }
                 button{

@@ -47,7 +47,7 @@ export default {
     },
     props:["state"],
     methods:{
-        colse(){
+        close(){
             document.getElementsByClassName("popup")[0].style.display = "none"
         }
     },
