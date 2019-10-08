@@ -18,16 +18,16 @@
         </div>
         <div id="textInfo" class="info">
             <ul>
-                <li style="margin-top:20px;"><span>birthday</span>{{processingMsg.archive.identityInfo.birthday}}</li>
-                <li><span>country</span>{{processingMsg.archive.identityInfo.country}}</li>
-                <li><span>residenceCountry</span>{{processingMsg.archive.identityInfo.residenceCountry}}</li>
-                <li><span>idcardNumber</span>{{processingMsg.archive.identityInfo.idcardNumber}}</li>
-                <li><span>passportNumber</span>{{processingMsg.archive.identityInfo.passportNumber}}</li>
-                <li><span>phoneNumber</span>{{processingMsg.archive.identityInfo.phoneNumber}}</li>
-                <li><span>gender</span>{{processingMsg.archive.identityInfo.gender}}</li>
-                <li><span>email</span>{{processingMsg.archive.basicInfo.email}}</li>
-                <li><span>taxId</span>{{processingMsg.archive.basicInfo.taxId}}</li>
-                <li><span>ssn</span>{{processingMsg.archive.basicInfo.ssn}}</li>
+                <li style="margin-top:20px;"><span>Date of Birth</span>{{processingMsg.archive.identityInfo.birthday}}</li>
+                <li><span>Nationality</span>{{processingMsg.archive.identityInfo.country}}</li>
+                <li><span>Country of Residence</span>{{processingMsg.archive.identityInfo.residenceCountry}}</li>
+                <li><span>Government Issued Identification Number</span>{{processingMsg.archive.identityInfo.idcardNumber}}</li>
+                <li><span>Passport Number</span>{{processingMsg.archive.identityInfo.passportNumber}}</li>
+                <li><span>Phone Number</span>{{processingMsg.archive.identityInfo.phoneNumber}}</li>
+                <li><span>Gender</span>{{processingMsg.archive.identityInfo.gender}}</li>
+                <li><span>eMail</span>{{processingMsg.archive.basicInfo.email}}</li>
+                <li><span>TaxId</span>{{processingMsg.archive.basicInfo.taxId}}</li>
+                <li><span>SSN</span>{{processingMsg.archive.basicInfo.ssn}}</li>
                 <li>
                     <span>address</span>
                     <p v-for="(i,index) in processingMsg.archive.identityInfo.address.addressSequence" :key="index">
@@ -120,14 +120,15 @@
                     color:#000;
                     span{
                         padding-left:20px;
+                        padding-right: 20px;
                         font-weight: 600;
                         display:inline-block;
-                        width:220px;
+                        width:240px;
                     }
                     .address{
                         font-weight: 500;
-                        padding-left: 0;
-                        width: 110px;
+                        width: 180px;
+                        padding-right: 30px;
                     }
                     p{
                         padding:6px;
@@ -137,7 +138,7 @@
             }
         }
         #fileInfo{
-            padding:30px 40px;
+            padding:30px 20px;
             margin-bottom: 50px;
             overflow: hidden;
             ul{
@@ -148,9 +149,9 @@
                 li{
                     float:left;
                     margin-top: 35px;
-                    margin-left: 30px;
-                    width:150px;
-                    height:170px;
+                    margin-left: 20px;
+                    width:170px;
+                    height:180px;
                     overflow: hidden;
                     box-shadow: 1px 1px 1px #ccc;
                     text-align: center;
@@ -170,6 +171,8 @@
                         font-size: 12px;
                         color:#000;
                         cursor: pointer;
+                        padding:3px;
+                        word-wrap: break-word;
                     }
                 }
             }
