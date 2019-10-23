@@ -2,7 +2,7 @@
     <div class="popup">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <span>kyc状态</span>
+                <span>Kyc State</span>
                 <span id="close" @click="close">X</span>
             </div>
             <div class="panel-body">kyc</div>

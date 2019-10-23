@@ -4,11 +4,11 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>提交时间 </th>
-                    <th>identity</th>
-                    <th>国家</th>
-                    <th>司法区</th>
-                    <th>claim</th>
+                    <th>{{$t('m.list.time')}}</th>
+                    <th>{{$t('m.list.identity')}}</th>
+                    <th>{{$t('m.list.country')}}</th>
+                    <th>{{$t('m.list.district')}}</th>
+                    <th>{{$t('m.list.claim')}}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -19,17 +19,17 @@
                     <td>{{item.order.country}}</td>
                     <td>{{item.order.jurisdiction}}</td>
                     <td>{{item.order.claimType}}</td>
-                    <td><button type="button" class="btn btn-success float" @click="receive($event)" :id="index" :orderId="item.order.id">接单</button></td>
+                    <td><button type="button" class="btn btn-success float" @click="receive($event)" :id="index" :orderId="item.order.id">{{$t('m.list.order')}}</button></td>
                 </tr>
             </tbody>
         </table>
         <nav aria-label="...">
             <ul class="pager">
-                <li id="prev"><a @click="prev">前一页</a></li>
-                <li id="next"><a @click="next">下一页</a></li>
+                <li id="prev"><a @click="prev">{{$t('m.list.prev')}}</a></li>
+                <li id="next"><a @click="next">{{$t('m.list.next')}}</a></li>
             </ul>
         </nav>
-        <div id="page">第<span>{{nowPage}}</span>/<span>{{Math.ceil(this.totle/pageSize)?Math.ceil(this.totle/pageSize):1}}</span>页</div>
+        <div id="page">{{$t('m.list.num')}}<span>{{nowPage}}</span>/<span>{{Math.ceil(this.totle/pageSize)?Math.ceil(this.totle/pageSize):1}}</span>{{$t('m.list.page')}}</div>
     </div>
 </template>
 <style lang="scss">
@@ -119,14 +119,14 @@ export default {
             }).then(res=>{
                 this.unReceive = res.data.data;
                 if(res.data.success == true){
-                    alert("接单成功");
+                    alert(this.$t('m.alert.success'));
                     //0.5s后刷新页面
                     setTimeout(function(){
                         window.location.reload();
                     },500); 
                 }
                 if(res.data.success == false){
-                    alert("接单失败")
+                    alert(this.$t('m.alert.orderFail'))
                 }
             })
         }
@@ -142,7 +142,7 @@ export default {
                 this.totle = res.data.data;
                 this.maxPage = Math.ceil(this.totle/this.pageSize)?Math.ceil(this.totle/this.pageSize):1;
             }else{
-                console.log("/order/size请求失败");
+                alert(this.$t('m.alert.pageFail'));
             }
         })
         //请求状态列表
@@ -156,7 +156,7 @@ export default {
             if(res.data.success == true){
                 this.unReceive = res.data.data;
             }else{
-                alert("获取订单列表失败");
+                alert(this.$t('m.alert.listFail'));
             }
         })
         
@@ -182,7 +182,7 @@ export default {
                 if(res.data.success == true){
                     this.unReceive = res.data.data;
                 }else{
-                    alert("获取列报信息失败");
+                    alert(this.$t('m.alert.listFail'));
                 }
                 
             })

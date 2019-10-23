@@ -2,7 +2,7 @@
     <div class="historyBox">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <span>kyc调用记录</span>
+                <span>Kyc History</span>
                 <span id="closeHistory" @click="close">X</span>
             </div>
             <div class="panel-body">

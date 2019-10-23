@@ -3,10 +3,10 @@
         <div id="claimBox">
             <div id="header"></div>
             <div id="content">
-                <button @click="kyc" type="button" class="btn btn-primary">获取kyc状态</button>
-                <button @click="kycState" type="button" class="btn btn-primary">kyc调用记录</button>
-                <button @click="agree" type="button" class="btn btn-primary">颁发证书</button>
-                <button @click="refuse" type="button" class="btn btn-primary">拒绝颁发证书</button>
+                <button @click="kyc" type="button" class="btn btn-primary">{{$t('m.right.state')}}</button>
+                <button @click="kycState" type="button" class="btn btn-primary">{{$t('m.right.history')}}</button>
+                <button @click="agree" type="button" class="btn btn-primary">{{$t('m.right.issue')}}</button>
+                <button @click="refuse" type="button" class="btn btn-primary">{{$t('m.right.refuse')}}</button>
             </div>
         </div>
         <popup :state="state" id="son"></popup>
@@ -75,7 +75,7 @@ export default {
                 }
             }).then(res=>{
                 if(res.data.success == true && res.data.data == null){
-                   alert("正在审核中...");
+                   alert(this.$t('m.right.check'));
                 }
                 if(res.data.success == true && res.data.data != null){
                     this.state = res.data.data;
@@ -95,7 +95,7 @@ export default {
                    this.kycHistory = res.data.data;
                    document.getElementById("history").style.display = "block";
                 }else{
-                    console.log("记录调用失败");
+                    console.log(this.$t('m.alert.historyFail'));
                 }
             })
         },
@@ -106,9 +106,9 @@ export default {
                 }
             }).then(res=>{
                 if(res.data.success == true){
-                    alert("颁发成功")
+                    alert(this.$t('m.alert.issueSuccess'))
                 }else{
-                    alert("颁发失败")
+                    alert(this.$t('m.alert.issueFail'))
                 }
             })
         },
@@ -119,9 +119,9 @@ export default {
                 }
             }).then(res=>{
                 if(res.data.success == true){
-                    alert("已拒绝颁发")
+                    alert(this.$t('m.alert.refuseSuccess'))
                 }else{
-                    alert("拒绝颁发失败")
+                    alert(this.$t('m.alert.refuseFail'))
                 }
             })
         }

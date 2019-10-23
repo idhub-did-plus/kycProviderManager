@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <div class="page-header">
-            <h1>详细信息</h1>
+            <h1>{{$t('m.userinfo.title')}}</h1>
         </div>
         <Left :id="id" :identity="identity" :claimType="claimType" :processingMsg="msg" ref="brother"></Left>
         <Right :orderId="orderId"></Right>
@@ -42,7 +42,7 @@ export default {
             if(res.data.success == true){
                 this.msg = res.data.data.data;
             }else{
-                alert("请求用户信息失败");
+                alert(this.$t('m.alert.userInfoFail'));
             }
         })
     }

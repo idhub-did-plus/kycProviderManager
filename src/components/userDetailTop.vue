@@ -4,7 +4,7 @@
             <div id="top"></div>
             <div id="bottom">
                 <div id="msg">
-                    <div id="username">
+                    <div id="username" v-if="processingMsg">
                         {{processingMsg.archive.identityInfo.name.firstName}}
                         {{processingMsg.archive.identityInfo.name.middleName}}
                         {{processingMsg.archive.identityInfo.name.lastName}}
@@ -17,27 +17,27 @@
             <div id="img"><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3987282417,3624059467&fm=26&gp=0.jpg" alt=""></div>
         </div>
         <div id="textInfo" class="info">
-            <ul>
-                <li style="margin-top:20px;"><span>Date of Birth</span>{{processingMsg.archive.identityInfo.birthday}}</li>
-                <li><span>Nationality</span>{{processingMsg.archive.identityInfo.country}}</li>
-                <li><span>Country of Residence</span>{{processingMsg.archive.identityInfo.residenceCountry}}</li>
-                <li><span>Government Issued Identification Number</span>{{processingMsg.archive.identityInfo.idcardNumber}}</li>
-                <li><span>Passport Number</span>{{processingMsg.archive.identityInfo.passportNumber}}</li>
-                <li><span>Phone Number</span>{{processingMsg.archive.identityInfo.phoneNumber}}</li>
-                <li><span>Gender</span>{{processingMsg.archive.identityInfo.gender}}</li>
-                <li><span>eMail</span>{{processingMsg.archive.basicInfo.email}}</li>
-                <li><span>TaxId</span>{{processingMsg.archive.basicInfo.taxId}}</li>
-                <li><span>SSN</span>{{processingMsg.archive.basicInfo.ssn}}</li>
+            <ul v-if="processingMsg">
+                <li style="margin-top:20px;"><span>{{$t('m.userinfo.birthday')}}</span>{{processingMsg.archive.identityInfo.birthday}}</li>
+                <li><span>{{$t('m.userinfo.country')}}</span>{{processingMsg.archive.identityInfo.country}}</li>
+                <li><span>{{$t('m.userinfo.residenceCountry')}}</span>{{processingMsg.archive.identityInfo.residenceCountry}}</li>
+                <li><span>{{$t('m.userinfo.idcardNumber')}}</span>{{processingMsg.archive.identityInfo.idcardNumber}}</li>
+                <li><span>{{$t('m.userinfo.passportNumber')}}</span>{{processingMsg.archive.identityInfo.passportNumber}}</li>
+                <li><span>{{$t('m.userinfo.phoneNumber')}}</span>{{processingMsg.archive.identityInfo.phoneNumber}}</li>
+                <li><span>{{$t('m.userinfo.gender')}}</span>{{processingMsg.archive.identityInfo.gender}}</li>
+                <li><span>{{$t('m.userinfo.email')}}</span>{{processingMsg.archive.basicInfo.email}}</li>
+                <li><span>{{$t('m.userinfo.taxId')}}</span>{{processingMsg.archive.basicInfo.taxId}}</li>
+                <li><span>{{$t('m.userinfo.ssn')}}</span>{{processingMsg.archive.basicInfo.ssn}}</li>
                 <li>
-                    <span>address</span>
+                    <span>{{$t('m.userinfo.address')}}</span>
                     <p v-for="(i,index) in processingMsg.archive.identityInfo.address.addressSequence" :key="index">
                         <span class="address">{{i.name}}:</span>{{i.value}}
                     </p>
-                    <p><span class="address">postalCode:</span>{{processingMsg.archive.identityInfo.address.postalCode}}</p>
+                    <p><span class="address">{{$t('m.userinfo.postalCode')}}</span>{{processingMsg.archive.identityInfo.address.postalCode}}</p>
                 </li>
-                <li><span>financialProfile</span>
-                    <p><span class="address">buyerType:</span>{{buyerType}}</p>
-                    <p><span class="address">investorType:</span>{{investorType}}</p>
+                <li><span>{{$t('m.userinfo.financialProfile')}}</span>
+                    <p><span class="address">{{$t('m.userinfo.buyer')}}</span>{{buyerType}}</p>
+                    <p><span class="address">{{$t('m.userinfo.investor')}}</span>{{investorType}}</p>
                 </li>
             </ul>
         </div>

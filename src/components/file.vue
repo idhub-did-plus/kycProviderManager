@@ -7,16 +7,16 @@
             <div class="panel-body">
                 <div class="content">
                     <ul>
-                        <li><span>文件ID:</span><p>{{message.materials[item].id}}</p></li>
-                        <li><span>用户ID:</span><span>{{userID}}</span></li>
-                        <li><span>资料类型：</span><span>{{message.materials[item].type}}</span></li>
-                        <li><span>文件名称：</span><span>{{message.materials[item].name}}</span></li>
-                        <li><span>扩展类型：</span><span>{{message.materials[item].ext}}</span></li>
+                        <li><span>{{$t('m.file.fileId')}}:</span><p>{{message.materials[item].id}}</p></li>
+                        <li><span>{{$t('m.file.userId')}}:</span><span>{{userID}}</span></li>
+                        <li><span>{{$t('m.file.type')}}：</span><span>{{message.materials[item].type}}</span></li>
+                        <li><span>{{$t('m.file.name')}}：</span><span>{{message.materials[item].name}}</span></li>
+                        <li><span>{{$t('m.file.ext')}}：</span><span>{{message.materials[item].ext}}</span></li>
                     </ul>
                 </div>
-                <button type="button" class="btn btn-default" @click="newPage">浏览文件</button>
-                <button type="button" class="btn btn-default" @click="download">下载文件</button>
-                <button type="button" class="btn btn-default" @click="upload">提交kyc</button>
+                <button type="button" class="btn btn-default" @click="newPage">{{$t('m.file.newPage')}}</button>
+                <button type="button" class="btn btn-default" @click="download">{{$t('m.file.download')}}</button>
+                <button type="button" class="btn btn-default" @click="upload">{{$t('m.file.upload')}}</button>
             </div>
         </div>
     </div>
