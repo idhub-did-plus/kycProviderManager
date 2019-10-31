@@ -11,6 +11,7 @@
         </div>
         <popup :state="state" id="son"></popup>
         <kycHistory :kycHistory="kycHistory" id="history"></kycHistory>
+        {{processingMsg}}
     </div>
 </template>
 <style lang="scss">
@@ -62,10 +63,34 @@ export default {
     data(){
         return {
             kycHistory:[],
-            state:""
+            state:"",
+            setClaimValue:[],
+            nationality:"",
+            residence:"",
+            jurisdictions:"",
+            account:"",
+            cType:"",
+            subAddr:""
         }
     },
-    props:["orderId"],
+    props:["orderId","processingMsg","claimType","identity"],
+    mounted(){
+        this.account = web3.eth.accounts[0];
+    },
+    watch:{
+        processingMsg(newVal){
+            this.setClaimValue = newVal;
+            this.nationality = this.setClaimValue.archive.identityInfo.country;
+            this.residence = this.setClaimValue.archive.identityInfo.residenceCountry;
+            this.jurisdictions = null;
+        },
+        claimType(newVal){
+            this.cType = newVal;
+        },
+        identity(newVal){
+            this.subAddr = newVal;
+        }
+    },
     methods:{
         kyc(){
             //kyc状态接口idm evalute
@@ -100,6 +125,7 @@ export default {
             })
         },
         agree(){
+            //链下claim颁发
             this.$http.get(url.baseURL+"/order/issue_claim",{
                 params:{
                     orderId:this.orderId
@@ -111,6 +137,241 @@ export default {
                     alert(this.$t('m.alert.issueFail'))
                 }
             })
+            //链上claim颁发
+            //先判断是否是合规用户（ST合格投资者）
+            if(this.cType == "ST_Compliant_Investor"){
+                //给合规用户颁发三个链上claim
+                //与REC780合约交互
+                var abiArray = [
+                    {
+                    "constant": false,
+                    "inputs": [
+                        {
+                        "name": "key",
+                        "type": "bytes32"
+                        },
+                        {
+                        "name": "value",
+                        "type": "bytes32"
+                        }
+                    ],
+                    "name": "setSelfClaim",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                    },
+                    {
+                    "constant": false,
+                    "inputs": [
+                        {
+                        "name": "subject",
+                        "type": "address"
+                        },
+                        {
+                        "name": "key",
+                        "type": "bytes32"
+                        },
+                        {
+                        "name": "value",
+                        "type": "bytes32"
+                        }
+                    ],
+                    "name": "setClaim",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                    },
+                    {
+                    "constant": false,
+                    "inputs": [
+                        {
+                        "name": "issuer",
+                        "type": "address"
+                        },
+                        {
+                        "name": "subject",
+                        "type": "address"
+                        },
+                        {
+                        "name": "key",
+                        "type": "bytes32"
+                        }
+                    ],
+                    "name": "removeClaim",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                    },
+                    {
+                    "constant": true,
+                    "inputs": [
+                        {
+                        "name": "issuer",
+                        "type": "address"
+                        },
+                        {
+                        "name": "subject",
+                        "type": "address"
+                        },
+                        {
+                        "name": "key",
+                        "type": "bytes32"
+                        }
+                    ],
+                    "name": "getClaim",
+                    "outputs": [
+                        {
+                        "name": "",
+                        "type": "bytes32"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                    },
+                    {
+                    "constant": true,
+                    "inputs": [
+                        {
+                        "name": "",
+                        "type": "address"
+                        },
+                        {
+                        "name": "",
+                        "type": "address"
+                        },
+                        {
+                        "name": "",
+                        "type": "bytes32"
+                        }
+                    ],
+                    "name": "registry",
+                    "outputs": [
+                        {
+                        "name": "",
+                        "type": "bytes32"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                    },
+                    {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                        "indexed": true,
+                        "name": "issuer",
+                        "type": "address"
+                        },
+                        {
+                        "indexed": true,
+                        "name": "subject",
+                        "type": "address"
+                        },
+                        {
+                        "indexed": true,
+                        "name": "key",
+                        "type": "bytes32"
+                        },
+                        {
+                        "indexed": false,
+                        "name": "value",
+                        "type": "bytes32"
+                        },
+                        {
+                        "indexed": false,
+                        "name": "updatedAt",
+                        "type": "uint256"
+                        }
+                    ],
+                    "name": "ClaimSet",
+                    "type": "event"
+                    },
+                    {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                        "indexed": true,
+                        "name": "issuer",
+                        "type": "address"
+                        },
+                        {
+                        "indexed": true,
+                        "name": "subject",
+                        "type": "address"
+                        },
+                        {
+                        "indexed": true,
+                        "name": "key",
+                        "type": "bytes32"
+                        },
+                        {
+                        "indexed": false,
+                        "name": "removedAt",
+                        "type": "uint256"
+                        }
+                    ],
+                    "name": "ClaimRemoved",
+                    "type": "event"
+                    }
+                ];
+                //合约地址
+                var address = "0x3c5a44d263ABed6795D0Cb5ed5f7BC2E4337eeF6";
+                var MyContract = web3.eth.contract(abiArray);
+                // 使用合约地址实例化合约
+                var ERC780Contract = MyContract.at(address);
+                
+                //首先分别判断三个claim的value值是否存在，不存在则不颁发
+                if(this.nationality){
+                    //合约setClaim方法的三个参数
+                    var identity = this.subAddr;
+                    var key = web3.sha3('nationality');
+                    var val = 'stCompliance-0.0.1-' + this.nationality;
+                    var value = web3.sha3(val);
+                    //调智能合约
+                    ERC780Contract.setClaim.sendTransaction(identity,key,value,{from:this.account},function(err, result){
+                        if(!err){
+                            console.log(result)
+                        }else{
+                            console.log(err)
+                        }
+                    })
+                }
+                if(this.residence){
+                    //合约setClaim方法的三个参数
+                    var identity = this.subAddr;
+                    var key = web3.sha3('residence');
+                    var val = 'stCompliance-0.0.1-' + this.residence;
+                    var value = web3.sha3(val);
+                    //调智能合约
+                    ERC780Contract.setClaim.sendTransaction(identity,key,value,{from:this.account},function(err, result){
+                        if(!err){
+                            console.log(result)
+                        }else{
+                            console.log(err)
+                        }
+                    })
+                }
+                if(this.jurisdictions){
+                    //合约setClaim方法的三个参数
+                    var identity = this.subAddr;
+                    var key = web3.sha3('jurisdictions');
+                    var val = 'stCompliance-0.0.1-' + this.jurisdictions;
+                    var value = web3.sha3(val);
+                    //调智能合约
+                    ERC780Contract.setClaim.sendTransaction(identity,key,value,{from:this.account},function(err, result){
+                        if(!err){
+                            console.log(result)
+                        }else{
+                            console.log(err)
+                        }
+                    })
+                }
+            }
         },
         refuse(){
             this.$http.get(url.baseURL+"/order/refuse_claim",{

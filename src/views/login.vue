@@ -39,7 +39,7 @@ import url from "../modules/baseURL"
 export default {
     data(){
         return {
-            timestamp:0,
+            timestamp:0
         }
     },
     mounted(){
@@ -47,13 +47,13 @@ export default {
         this.timestamp = myDate.getTime();
         window.addEventListener('load', function() {
 	        if (!window.web3) {//用来判断你是否安装了metamask
-	          window.alert('Please install MetaMask first.');
-	          return;
+	            window.alert('Please install MetaMask first.');
+	            return;
 	        }
 	      	if (window.ethereum) {
 		        window.web3 = new Web3(ethereum);
 		        try{
-		            ethereum.enable();
+                    ethereum.enable();
 		        }catch(error) {
 		           window.alert('something is wrong.');
 		        }

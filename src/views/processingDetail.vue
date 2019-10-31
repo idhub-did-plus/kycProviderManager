@@ -4,7 +4,7 @@
             <h1>{{$t('m.userinfo.title')}}</h1>
         </div>
         <Left :id="id" :identity="identity" :claimType="claimType" :processingMsg="msg" ref="brother"></Left>
-        <Right :orderId="orderId"></Right>
+        <Right :orderId="orderId" :processingMsg="msg" :claimType="claimType" :identity="identity"></Right>
     </div>
 </template>
 <style lang="scss">
