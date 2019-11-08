@@ -13,7 +13,7 @@ import Login from "./login"
 
 export default new Router({
   routes: [
-    {path:"/",redirect:"Login"},
-    processingDetail,unreceived,management,history,processing,newPage,Login
+    {path:"/",redirect:"unReceivedList"},
+    processingDetail,unreceived,management,history,processing,newPage
   ]
 })

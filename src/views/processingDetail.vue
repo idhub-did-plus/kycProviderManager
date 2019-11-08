@@ -1,5 +1,6 @@
 <template>
     <div class="detail">
+        <Nav></Nav>
         <div class="page-header">
             <h1>{{$t('m.userinfo.title')}}</h1>
         </div>
@@ -14,8 +15,12 @@
 import Left from "../components/userDetailTop"
 import Right from "../components/userDetailRight"
 import url from "../modules/baseURL"
+import Nav from "../components/navigator"
 
 export default {
+    components:{
+        Nav
+    },
     data(){
         return {
             id:"",

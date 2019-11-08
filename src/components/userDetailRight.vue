@@ -11,7 +11,6 @@
         </div>
         <popup :state="state" id="son"></popup>
         <kycHistory :kycHistory="kycHistory" id="history"></kycHistory>
-        {{processingMsg}}
     </div>
 </template>
 <style lang="scss">
@@ -125,18 +124,6 @@ export default {
             })
         },
         agree(){
-            //链下claim颁发
-            this.$http.get(url.baseURL+"/order/issue_claim",{
-                params:{
-                    orderId:this.orderId
-                }
-            }).then(res=>{
-                if(res.data.success == true){
-                    alert(this.$t('m.alert.issueSuccess'))
-                }else{
-                    alert(this.$t('m.alert.issueFail'))
-                }
-            })
             //链上claim颁发
             //先判断是否是合规用户（ST合格投资者）
             if(this.cType == "ST_Compliant_Investor"){
@@ -326,6 +313,7 @@ export default {
                 var ERC780Contract = MyContract.at(address);
                 
                 //首先分别判断三个claim的value值是否存在，不存在则不颁发
+                //第一个claim
                 if(this.nationality){
                     //合约setClaim方法的三个参数
                     var identity = this.subAddr;
@@ -335,12 +323,14 @@ export default {
                     //调智能合约
                     ERC780Contract.setClaim.sendTransaction(identity,key,value,{from:this.account},function(err, result){
                         if(!err){
-                            console.log(result)
+                            console.log("nationality "+result)
                         }else{
-                            console.log(err)
+                            console.log("nationality "+err)
                         }
                     })
                 }
+
+                //第二个claim
                 if(this.residence){
                     //合约setClaim方法的三个参数
                     var identity = this.subAddr;
@@ -350,12 +340,14 @@ export default {
                     //调智能合约
                     ERC780Contract.setClaim.sendTransaction(identity,key,value,{from:this.account},function(err, result){
                         if(!err){
-                            console.log(result)
+                            console.log("residence "+result)
                         }else{
-                            console.log(err)
+                            console.log("residence "+err)
                         }
                     })
                 }
+
+                //第三个claim
                 if(this.jurisdictions){
                     //合约setClaim方法的三个参数
                     var identity = this.subAddr;
@@ -365,13 +357,26 @@ export default {
                     //调智能合约
                     ERC780Contract.setClaim.sendTransaction(identity,key,value,{from:this.account},function(err, result){
                         if(!err){
-                            console.log(result)
+                            console.log("jurisdictions "+result)
                         }else{
-                            console.log(err)
+                            console.log("jurisdictions "+err)
                         }
                     })
                 }
             }
+            
+            //链下claim颁发
+            this.$http.get(url.baseURL+"/order/issue_claim",{
+                params:{
+                    orderId:this.orderId
+                }
+            }).then(res=>{
+                if(res.data.success == true){
+                    alert(this.$t('m.alert.issueSuccess'))
+                }else{
+                    alert(this.$t('m.alert.issueFail'))
+                }
+            })
         },
         refuse(){
             this.$http.get(url.baseURL+"/order/refuse_claim",{

@@ -6,12 +6,19 @@
             </div>
             <div class="panel-body">
                 <div class="content">
-                    <ul>
+                    <ul v-if="item != 0">
                         <li><span>{{$t('m.file.fileId')}}:</span><p>{{message.materials[item].id}}</p></li>
                         <li><span>{{$t('m.file.userId')}}:</span><span>{{userID}}</span></li>
                         <li><span>{{$t('m.file.type')}}：</span><span>{{message.materials[item].type}}</span></li>
                         <li><span>{{$t('m.file.name')}}：</span><span>{{message.materials[item].name}}</span></li>
                         <li><span>{{$t('m.file.ext')}}：</span><span>{{message.materials[item].ext}}</span></li>
+                    </ul>
+                    <ul v-else>
+                        <li><span>{{$t('m.file.fileId')}}:</span></li>
+                        <li><span>{{$t('m.file.userId')}}:</span></li>
+                        <li><span>{{$t('m.file.type')}}：</span></li>
+                        <li><span>{{$t('m.file.name')}}：</span></li>
+                        <li><span>{{$t('m.file.ext')}}：</span></li>
                     </ul>
                 </div>
                 <button type="button" class="btn btn-default" @click="newPage">{{$t('m.file.newPage')}}</button>

@@ -9,6 +9,8 @@
                         {{processingMsg.archive.identityInfo.name.middleName}}
                         {{processingMsg.archive.identityInfo.name.lastName}}
                     </div>
+                    <div id="username" v-else>
+                    </div>
                     <span>{{claimType}}</span>
                     <br>
                     <span>{{identity}}</span>
@@ -38,6 +40,29 @@
                 <li><span>{{$t('m.userinfo.financialProfile')}}</span>
                     <p><span class="address">{{$t('m.userinfo.buyer')}}</span>{{buyerType}}</p>
                     <p><span class="address">{{$t('m.userinfo.investor')}}</span>{{investorType}}</p>
+                </li>
+            </ul>
+            <ul v-else>
+                <li style="margin-top:20px;"><span>{{$t('m.userinfo.birthday')}}</span></li>
+                <li><span>{{$t('m.userinfo.country')}}</span></li>
+                <li><span>{{$t('m.userinfo.residenceCountry')}}</span></li>
+                <li><span>{{$t('m.userinfo.idcardNumber')}}</span></li>
+                <li><span>{{$t('m.userinfo.passportNumber')}}</span></li>
+                <li><span>{{$t('m.userinfo.phoneNumber')}}</span></li>
+                <li><span>{{$t('m.userinfo.gender')}}</span></li>
+                <li><span>{{$t('m.userinfo.email')}}</span></li>
+                <li><span>{{$t('m.userinfo.taxId')}}</span></li>
+                <li><span>{{$t('m.userinfo.ssn')}}</span></li>
+                <li>
+                    <span>{{$t('m.userinfo.address')}}</span>
+                    <p>
+                        <span class="address"></span>
+                    </p>
+                    <p><span class="address">{{$t('m.userinfo.postalCode')}}</span></p>
+                </li>
+                <li><span>{{$t('m.userinfo.financialProfile')}}</span>
+                    <p><span class="address">{{$t('m.userinfo.buyer')}}:</span></p>
+                    <p><span class="address">{{$t('m.userinfo.investor')}}:</span></p>
                 </li>
             </ul>
         </div>
